@@ -1,0 +1,139 @@
+Save File Layout
+
+The savefile is a binary file. I don't want to save it as text because I want to try and actually save it using binary formats. Also, it makes ripping harder. ^_^
+
+1. Trainer Data
+	1.1 Trainer's name
+	1.2 Trainer's money
+	1.3 Trainer's ID
+	1.4 Trainer's badges
+		1.4.1 Elite Four and Champions
+	1.5 Trainer's backpack
+		1.5.1 Medicine
+		1.5.2 Key Items
+			1.5.2.1 Coin Case Coins
+		1.5.3 Pokeballs
+		1.5.4 TM's & HM's
+		1.5.5 Berries
+		1.5.6 Other Items
+	1.6 Trainer's party
+	1.7 Pokedex
+	1.8 Misc Data
+2. Overworld Data
+	2.1 Unlocks
+	2.2 PC Data
+		2.2.1 Pokemon
+		2.2.2 Items
+		// Include decorations later.
+	2.3 NPC Trainer Data
+	2.4 Misc Data
+3. Diagnostic Data
+	3.1 Checksum
+
+Layout Descriptions
+
+1.1 Trainer's name
+
+Self-explanatory, a 10-byte string containing the trainer's name.
+
+1.2 Trainer's money
+
+A 4-byte string containing the trainer's amount of money. Read in big-endian order. The trainer can have up to about 21 million dollars worth of cash. (2,147,483,647 pyen).
+
+1.3 Trainer's ID
+
+A 4-byte string containing both the trainer's visible ID and hidden ID. Both have a value of up to 65535.
+
+1.4 Trainer's badges
+
+A 4-byte string containing data about the various badges - 8 from each region.
+
+1.4.1 Elite Four and Champions
+
+Another byte that contains data on whether the trainer has defeated the Elite Four and Champion of each respective region or not.
+
+1.5 Trainer's backpack
+
+This will be about 600 bytes total.
+
+1.5.1 Medicine
+	A 26-byte string, allowing each item to have up to 65,535 of its count. Counted in this category are: Potion, Super Potion, Ultra Potion, Max Potion, Antidote, Parlyz Heal, Awakening, Burn Heal, Ice Heal, Full Heal, Full Restore.
+1.5.2 Key Items
+	A 5-byte string. Each Key Item can only have one occurrence, so there will be at most 40 key items.
+1.5.2.1 Coin Case Coins
+	A 2-byte string that comes strictly after the Key Item string. The coin case can store up to 9999 coins.
+1.5.3 Pokeballs
+	An 8-byte string that allows each type of Pokeball to have up to 65,535 of its count.
+		* Later, include balls from other generations, but for now...yeah.
+1.5.4 TM's and HM's
+	A 200-byte string that allows each TM and/or HM to have up to 255 of its count. (There will be about 200 TM's. XD)
+1.5.5 Berries
+	An 86-byte string that allows each berry to have up to 65,535 of its count. (43 berries in total, correct?)
+1.5.6 Other Items
+	A 300-byte string containing Any items that don't go in the other pockets. Up to 150 items go here, with up to 65,535 of each item. Item slots cannot be duplicated. In-battle items and mail are lumped into this category.
+
+1.6 Trainer's party
+
+A 6x80 byte string containing the trainer's party status.
+
+byte   0 -   1: species
+byte   2 -  11: nickname
+byte  12 -  15: OT_ID (16 to 23 are replaced.)
+byte  24 -  27: personality value
+byte  28 -  29: held item
+byte  30 -  32: experience points (This determines level.)
+byte  33 -  40: moves known
+byte  41 -  44: PP per move + PP Up data
+byte  45 -  50: IV's (6 bytes, from 0 to 31)
+byte  51 -  56: EV's (6 bytes, from 0 to 255)
+byte        57: Level (1 to 100)
+byte  58 -  59: Current HP
+byte  60 -  71: Stats (All six of 'em.)
+byte  72 -  73: Shiny variable (along with OT_ID, determines shininess.)
+byte        74: Status ailment
+byte		75: Ability
+byte        76: Happiness
+byte		77: Pokerus status
+byte  78 -  87: OT name
+
+1.7 Pokedex
+
+A 493-byte string containing the trainer's Pokedex status. Each byte is set to 0 if the Pokemon was not met, 1 if the Pokemon was met, and 2 if the Pokemon was caught.
+
+1.8 Misc Data
+
+The total size so far is a measly 1,575 bytes. I'll leave this at 2,048 just to be safe.
+
+2.1 Unlocks
+
+An 60-byte string containing whether certain things were unlocked or not.
+
+2.2 PC Data
+
+2.2.1 Pokemon
+
+There are a total of 20 boxes, each of which can hold 30 Pokemon, for a total of 600 x 80 bytes, + another 160 for the names of all 20 boxes.
+
+// A consequence of having 80 bytes is that all the status conditions, etc. of Pokemon are retained when they are sent to the PC.
+
+2.2.2 Items
+
+Only miscellaneous items can be stored in the PC. As usual, there are 150 spaces for them, and each can hold up to 65,535.
+
+2.3 NPC Trainer Data
+
+About 600 to 700 bytes are allocated to this, depending on how many trainers I decide to program in. Depending on the data here, each trainer will have different Pokemon, different reactions, etc.
+
+-1 = Unmet and eager
+0 = Unmet
+1 = Met and currently unwilling.
+2 = Met, but willing again.
+3 or more (n) = Met n-1 times, but willing again. Different n's will have different things. Maximum is probably 100. Once a trainer has been met 100 times, it ceases to keep levelling up.
+
+2.4 Misc Data
+
+This contains a 1-byte variable for the step counter. This step counter controls happiness, egg cycles, etc. It also contains an 8-byte string representing at which position the player is.
+
+3.1 Checksum
+
+There is a 16-byte checksum at the end. The method with which it should be computed will come later.

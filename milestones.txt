@@ -1,0 +1,33 @@
+Milestones for the final project
+
+1.	Battle engine
+	1.1 Pokemon class
+	1.2 Move class
+	1.3 MoveStatus class
+2.	Items
+	2.1 Item class
+		2.1.1 Berry class
+	2.2 Trainer class
+	2.3 Save files
+3.	Overworld
+	3.1 Window
+	3.2 Mapping
+		3.2.1 Tile graphics
+		3.2.2 Timers
+		3.2.3 Menus
+	3.3 Events
+	3.4 Battle Graphics
+	3.5 Animations
+4. 	Integration / Battles
+	4.1 Battle engine
+--- everything after this point is optional.
+		4.1.1 Battle animations
+5. 	Audio
+6.	Other 3 regions
+	6.1 Johto
+	6.2 Hoenn
+	6.3 Sinnoh
+7.	Extensions
+	7.1 Daycare / Breeding
+	7.2 Contests
+8. 	Storyline

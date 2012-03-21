@@ -1,0 +1,22 @@
+// Jokemon save file generator
+// Jokemon = Java Pokemon. Just saying that the name isn't very good.
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+char trainer_name[11];
+unsigned char trainer_money[4];
+unsigned short trainer_ID[2];
+unsigned char badges[4]; // 32 badges in total
+
+struct Backpack{
+    unsigned short medicine[13];
+}
+
+Backpack bag;
+
+int main(){
+    system("pause");
+    return 0;
+}

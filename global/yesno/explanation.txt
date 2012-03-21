@@ -1,0 +1,5 @@
+YesNo procedures
+
+This package is for all Yes/No dialog procedures in the game, since I can't implement them as a simple method. In here, you'll find all the code for each of the different choices in YesNo.
+
+The YesNo thing can only change variables. You can only use YesNo to make the player walk after the text is finished. 
